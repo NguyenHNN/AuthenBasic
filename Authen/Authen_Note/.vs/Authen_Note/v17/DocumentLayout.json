@@ -1,0 +1,85 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Authen\\Authen_Note\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6A6E21E2-C77B-4CCD-936F-98786529D60C}|APIService\\APIService.csproj|d:\\authen\\authen_note\\apiservice\\controllers\\authenticationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A6E21E2-C77B-4CCD-936F-98786529D60C}|APIService\\APIService.csproj|solutionrelative:apiservice\\controllers\\authenticationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|d:\\authen\\authen_note\\services\\services\\authenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|solutionrelative:services\\services\\authenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|d:\\authen\\authen_note\\services\\services\\useraccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|solutionrelative:services\\services\\useraccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|d:\\authen\\authen_note\\services\\iservices\\iauthenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{475545AF-64A2-4BB8-9614-B3F3E004F92B}|Services\\Services.csproj|solutionrelative:services\\iservices\\iauthenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserAccountService.cs",
+              "DocumentMoniker": "D:\\Authen\\Authen_Note\\Services\\Services\\UserAccountService.cs",
+              "RelativeDocumentMoniker": "Services\\Services\\UserAccountService.cs",
+              "ToolTip": "D:\\Authen\\Authen_Note\\Services\\Services\\UserAccountService.cs",
+              "RelativeToolTip": "Services\\Services\\UserAccountService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T09:09:25.109Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IAuthenService.cs",
+              "DocumentMoniker": "D:\\Authen\\Authen_Note\\Services\\IServices\\IAuthenService.cs",
+              "RelativeDocumentMoniker": "Services\\IServices\\IAuthenService.cs",
+              "ToolTip": "D:\\Authen\\Authen_Note\\Services\\IServices\\IAuthenService.cs",
+              "RelativeToolTip": "Services\\IServices\\IAuthenService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:19:57.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthenService.cs",
+              "DocumentMoniker": "D:\\Authen\\Authen_Note\\Services\\Services\\AuthenService.cs",
+              "RelativeDocumentMoniker": "Services\\Services\\AuthenService.cs",
+              "ToolTip": "D:\\Authen\\Authen_Note\\Services\\Services\\AuthenService.cs",
+              "RelativeToolTip": "Services\\Services\\AuthenService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQBAACzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:19:01.771Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthenticationController.cs",
+              "DocumentMoniker": "D:\\Authen\\Authen_Note\\APIService\\Controllers\\AuthenticationController.cs",
+              "RelativeDocumentMoniker": "APIService\\Controllers\\AuthenticationController.cs",
+              "ToolTip": "D:\\Authen\\Authen_Note\\APIService\\Controllers\\AuthenticationController.cs",
+              "RelativeToolTip": "APIService\\Controllers\\AuthenticationController.cs",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAuwJwAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:11:46.534Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+D:\Authen_Note\Common\bin\Debug\net8.0\Common.deps.json
+D:\Authen_Note\Common\bin\Debug\net8.0\Common.runtimeconfig.json
+D:\Authen_Note\Common\bin\Debug\net8.0\Common.dll
+D:\Authen_Note\Common\bin\Debug\net8.0\Common.pdb
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.csproj.AssemblyReference.cache
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.GeneratedMSBuildEditorConfig.editorconfig
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.AssemblyInfoInputs.cache
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.AssemblyInfo.cs
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.csproj.CoreCompileInputs.cache
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.dll
+D:\Authen_Note\Common\obj\Debug\net8.0\refint\Common.dll
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.pdb
+D:\Authen_Note\Common\obj\Debug\net8.0\Common.genruntimeconfig.cache
+D:\Authen_Note\Common\obj\Debug\net8.0\ref\Common.dll

@@ -1,0 +1,223 @@
+Login With Google
+
+1️⃣ Front-end gọi API của Google để lấy id_token
+Ở phía front-end (React, Angular, Vue...), bạn có thể dùng thư viện OAuth của Google.
+
+📌 Cài đặt thư viện Google OAuth (React)
+	npm install @react-oauth/google
+
+📌 Viết code đăng nhập bằng Google
+	import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+
+	const Login = () => {
+    		return (
+        		<GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+            			<GoogleLogin
+                			onSuccess={(response) => {
+                    				console.log("Google Response:", response);
+                    				fetch("https://your-api.com/api/auth/google", {
+                        				method: "POST",
+                        				headers: { "Content-Type": "application/json" },
+                        				body: JSON.stringify({ token: response.credential }),
+                    				})
+                    				.then(res => res.json())
+                    				.then(data => {
+                        				localStorage.setItem("token", data.token);
+                        				alert("Đăng nhập thành công!");
+                    				})
+                    				.catch(err => console.error("Lỗi:", err));
+                			}}
+                			onError={() => console.log("Đăng nhập thất bại")}
+            			/>
+        		</GoogleOAuthProvider>
+    		);
+	};
+
+	export default Login;
+
+2️⃣ Back-end xác thực id_token từ Google
+Back-end sẽ nhận id_token, xác thực với Google, sau đó tạo JWT Token để trả về.
+
+📌 Cài đặt thư viện cần thiết trong ASP.NET
+	dotnet add package Google.Apis.Auth
+	dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+
+📌 Thêm cấu hình Google vào appsettings.json
+	"GoogleAuth": {
+    		"ClientId": "YOUR_GOOGLE_CLIENT_ID"
+	},
+	"Jwt": {
+    		"Key": "YOUR_SECRET_KEY",
+    		"Issuer": "your-api.com"
+	}
+
+3️⃣ Xây dựng API /api/auth/google để xác thực và tạo JWT
+API này sẽ:
+	Xác thực id_token với Google.
+	Kiểm tra xem user đã tồn tại chưa, nếu chưa thì tạo mới.
+	Tạo JWT Token và gửi về front-end.
+
+📌 Viết API đăng nhập với Google
+	using Google.Apis.Auth;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.IdentityModel.Tokens;
+	using System.IdentityModel.Tokens.Jwt;
+	using System.Security.Claims;
+	using System.Text;
+
+	[Route("api/auth")]
+	[ApiController]
+	public class AuthController : ControllerBase
+	{
+    		private readonly IConfiguration _config;
+    		private readonly IUserService _userService;
+
+    		public AuthController(IConfiguration config, IUserService userService)
+    		{	
+        		_config = config;
+        		_userService = userService;
+    		}
+
+    		[HttpPost("google")]
+    		public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+    		{
+        		try
+        		{
+            			// 🟢 Xác thực token từ Google
+            			var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, new GoogleJsonWebSignature.ValidationSettings
+            				{
+                				Audience = new[] { _config["GoogleAuth:ClientId"] }
+            				});
+
+            			if (payload == null)
+                				return Unauthorized("Token không hợp lệ!");
+
+            			// 🟢 Kiểm tra user trong database
+            			var user = await _userService.GetUserByEmailAsync(payload.Email);
+            			if (user == null)
+            			{
+                			user = await _userService.CreateUserAsync(new User
+                			{
+                    				Email = payload.Email,
+                    				Name = payload.Name,
+                    				Role = "User"
+                			});
+            			}
+
+            			// 🟢 Tạo JWT Token
+            			var token = GenerateJwtToken(user);
+            			return Ok(new { token });
+        		}
+        		catch (Exception ex)
+        		{
+            			return BadRequest($"Lỗi xác thực Google: {ex.Message}");
+        		}
+    		}
+
+    		private string GenerateJwtToken(User user)
+    		{
+        		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        		var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        		var claims = new[]
+        		{
+            			new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            			new Claim(JwtRegisteredClaimNames.Name, user,
+	    			new Claim(JwtRegisteredClaimNames.Name, user.Name),
+            			new Claim(ClaimTypes.Role, user.Role),
+            			new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+       	 		};
+
+        		var token = new JwtSecurityToken(
+            			issuer: _config["Jwt:Issuer"],
+            			audience: _config["Jwt:Issuer"],
+            			claims: claims,
+            			expires: DateTime.UtcNow.AddHours(3), // Token hết hạn sau 3 tiếng
+            			signingCredentials: creds
+        		);
+
+        		return new JwtSecurityTokenHandler().WriteToken(token);
+    		}
+	}
+
+	public class GoogleLoginRequest
+	{
+    		public string Token { get; set; }
+	}
+
+4️⃣ Cấu hình xác thực JWT trong Program.cs
+Để bảo vệ API bằng JWT, cần cấu hình AddAuthentication() và AddJwtBearer().
+
+📌 Thêm middleware xác thực JWT
+	using Microsoft.AspNetCore.Authentication.JwtBearer;
+	using Microsoft.IdentityModel.Tokens;
+	using System.Text;
+
+	var builder = WebApplication.CreateBuilder(args);
+
+	builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    		.AddJwtBearer(options =>
+    		{
+        		options.TokenValidationParameters = new TokenValidationParameters
+        		{
+            			ValidateIssuer = true,
+            			ValidateAudience = true,
+            			ValidateLifetime = true,
+            			ValidateIssuerSigningKey = true,
+            			ValidIssuer = builder.Configuration["Jwt:Issuer"],
+           			ValidAudience = builder.Configuration["Jwt:Issuer"],
+           			 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        		};
+    		});
+
+	builder.Services.AddAuthorization();
+
+5️⃣ Sử dụng JWT Token để gọi API bảo mật
+Sau khi nhận JWT Token từ API /api/auth/google, front-end lưu vào localStorage hoặc cookies, rồi dùng token này để gọi API.
+
+📌 Front-end gửi token trong header
+	fetch("https://your-api.com/api/user/profile", {
+    		method: "GET",
+    		headers: {
+        		"Authorization": `Bearer ${localStorage.getItem("token")}`
+    		}
+	})
+	.then(res => res.json())
+	.then(data => console.log("User Info:", data))
+	.catch(err => console.error("Lỗi:", err));
+
+6️⃣ Bảo vệ API bằng [Authorize]
+Bây giờ, mọi API cần xác thực sẽ yêu cầu JWT Token.
+
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
+
+	[Route("api/user")]
+	[ApiController]
+	public class UserController : ControllerBase
+	{
+    		[HttpGet("profile")]
+    		[Authorize] // Chặn truy cập nếu không có token hợp lệ
+    		public IActionResult GetUserProfile()
+    		{
+        		var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        		var name = User.FindFirst(ClaimTypes.Name)?.Value;
+        		var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        		return Ok(new { email, name, role });
+    		}
+	}
+
+7️⃣ Kết quả mong đợi
+✔ Người dùng bấm "Đăng nhập với Google" trên front-end → Nhận id_token
+✔ Gửi id_token về back-end → Kiểm tra với Google
+✔ Tạo hoặc lấy user trong database
+✔ Tạo JWT Token và gửi về front-end
+✔ Front-end lưu token, gửi kèm token khi gọi API
+✔ Back-end kiểm tra JWT, trả về dữ liệu
+
+
+
+
+
+
